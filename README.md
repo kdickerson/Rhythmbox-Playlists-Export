@@ -1,6 +1,8 @@
 Rhythmbox-Playlists-Export
 ==========================
 
+Author: Kyle Dickerson <kyle.dickerson@gmail.com>
+
 Use DBus to export smart and dumb playlists to standard playlist files (M3U).
 
 Also use to sync rhythmbox and associated media to another machine.
