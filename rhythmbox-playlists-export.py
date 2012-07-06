@@ -23,13 +23,13 @@ local_media = ["/home/%s/%s" % (local_username, x) for x in ["Music", "Audiobook
 local_playlists = '/tmp/rhythmbox_sync'
 remote_username = 'kyle'
 remote_host = "192.168.1.15" # Assumes passwordless SSH authentication available, uses rsync+ssh to move files
-remote_media = "/mnt/MAIN/Jess_Media"
-remote_playlists = '/home/%s/.xbmc/userdata/playlists/music' % (remote_username)
+remote_media = "/media/sheevaStorage/Music/Jess"
+remote_playlists = '/media/sheevaStorage/Playlists'
 
 EXPORT_PLAYLISTS = True
 KEEP_LOCAL_PLAYLIST_EXPORT = False
 PLAYLIST_FORMAT = 'M3U' # only M3U currently supported, See note about Rhythmbox URI encoding above which also pertains to PLS support
-SYNC_RHYTHMBOX = True
+SYNC_RHYTHMBOX = False
 SYNC_MEDIA = True
 SYNC_PLAYLISTS = True
 DRY_RUN = True # Don't actually rsync anything
@@ -115,18 +115,19 @@ def sync_rhythmbox():
     cmd = 'rsync -vrlptgz -e ssh "%s/"*.xml "%s@%s:%s" --delete-excluded' % (local_playlists, remote_username, remote_host, remote_rhythmbox)
     logging.debug('Executing: %s' % (cmd))
     os.system(cmd)
+    
+    cmd = 'rsync -vrlptgz -e ssh "%s/" "%s@%s:%s" --delete-excluded' % (local_coverart, remote_username, remote_host, remote_coverart)
+    logging.debug('Executing: %s' % (cmd))
+    os.system(cmd)
 
 
 def sync_media():
   logging.info("Syncing media files...")
   if not DRY_RUN:
     for media_loc in local_media:
-      cmd = 'rsync -vrlptgz -e ssh "%s" "%s@%s:%s" --delete-excluded' % (media_loc, remote_username, remote_host, remote_media)
+      cmd = 'rsync -vrlptgz -e ssh "%s" "%s@%s:%s/" --delete-excluded' % (media_loc, remote_username, remote_host, remote_media)
       logging.debug('Executing: %s' % (cmd))
       os.system(cmd)
-    cmd = 'rsync -vrlptgz -e ssh "%s/" "%s@%s:%s" --delete-excluded' % (local_coverart, remote_username, remote_host, remote_coverart)
-    logging.debug('Executing: %s' % (cmd))
-    os.system(cmd)
 
 
 def sync_playlists():
