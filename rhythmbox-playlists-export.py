@@ -42,7 +42,7 @@ remote_rhythmbox = "/home/%s/.local/share/rhythmbox" % (remote_username)
 remote_coverart = "/home/%s/.cache/rhythmbox/covers" % (remote_username)
 rhythmdb_filename = 'rhythmdb.xml'
 playlists_filename = 'playlists.xml'
-rhythmbox_startup_wait = 10 # seconds, if Rhythmbox hasn't finished initializing the exports won't work (haven't found a programmatic way to check this)
+rhythmbox_startup_wait = 15 # seconds, if Rhythmbox hasn't finished initializing the exports won't work (haven't found a programmatic way to check this)
 rhythmbox_shutdown_wait = 3 # seconds
 skip_playlists = ['Recently Added', 'Recently Played']
 
@@ -162,7 +162,7 @@ def sync_playlists():
 
 
 if EXPORT_PLAYLISTS:
-  os.system('rhythmbox-client --check-running')
+  os.system('rhythmbox-client --no-present')
   logging.info('Pausing %d seconds for Rhythmbox initialization' % (rhythmbox_startup_wait))
   time.sleep(rhythmbox_startup_wait) # rhythmbox isn't ready until shortly after rhythmbox-client returns
   export_playlists()
