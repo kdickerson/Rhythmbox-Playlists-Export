@@ -44,7 +44,7 @@ rhythmdb_filename = 'rhythmdb.xml'
 playlists_filename = 'playlists.xml'
 rhythmbox_startup_wait = 15 # seconds, if Rhythmbox hasn't finished initializing the exports won't work (haven't found a programmatic way to check this)
 rhythmbox_shutdown_wait = 3 # seconds
-skip_playlists = ['Recently Added', 'Recently Played']
+skip_playlists = ['Recently Added', 'Recently Played', 'My Top Rated']
 
 if not os.path.exists(local_playlists):
   logging.info("Creating directory for local export")
