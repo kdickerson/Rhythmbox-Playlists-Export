@@ -69,7 +69,7 @@ def export_playlists():
       logging.error("Failed to export playlist: %s" % (playlistName))
       if ex.get_dbus_name().find('Error.NoReply') > -1:
         logging.error("Perhaps it was empty?  Attempting to restart Rhythmbox...")
-        os.system('rhythmbox-client --check-running')
+        os.system('rhythmbox-client --no-present')
         logging.info('Pausing %d seconds for Rhythmbox initialization' % (rhythmbox_startup_wait))
         time.sleep(rhythmbox_startup_wait) # rhythmbox isn't ready until shortly after rhythmbox-client returns
         playlistManager = sessionBus.get_object('org.gnome.Rhythmbox3', '/org/gnome/Rhythmbox3/PlaylistManager')
