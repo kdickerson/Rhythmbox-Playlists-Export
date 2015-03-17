@@ -11,6 +11,7 @@ import re
 import urllib
 import time
 from xml.etree.ElementTree import Element, ElementTree
+import telnetlib
 import logging
 logging.basicConfig(level=logging.DEBUG) # filename='example.log',
 # Assumes base paths of local and remote media do not have special characters
@@ -26,12 +27,16 @@ remote_host = "silver-nuc" # Assumes passwordless SSH authentication available, 
 remote_media = "/home/kyle/lms_music/Music/Jess"
 remote_playlists = '/home/kyle/lms_music/Playlists/Jess'
 
+logitech_media_server_host = "silver-nuc"
+logitech_media_server_cli_port = "9090"
+
 EXPORT_PLAYLISTS = True
 KEEP_LOCAL_PLAYLIST_EXPORT = False
 PLAYLIST_FORMAT = 'M3U' # only M3U currently supported, See note about Rhythmbox URI encoding above which also pertains to PLS support
 SYNC_RHYTHMBOX = False
 SYNC_MEDIA = True
 SYNC_PLAYLISTS = True
+RESCAN_LMS = True # Send a rescan command to logitech media server using the CLI via Telnet
 DRY_RUN = True # Don't actually rsync anything
 
 # Probably correct from above configuration
@@ -160,6 +165,13 @@ def sync_playlists():
     logging.debug('Executing: %s' % (cmd))
     os.system(cmd)
 
+def rescan_lms():
+	logging.info("Sending rescan command to LMS...")
+	tn = telnetlib.Telnet(logitech_media_server_host, logitech_media_server_cli_port)
+	tn.write("rescan\n")
+	tn.read_until("rescan")
+	tn.write("exit\n")
+	tn.close()
 
 if EXPORT_PLAYLISTS:
   os.system('rhythmbox-client --no-present')
@@ -184,3 +196,6 @@ if SYNC_PLAYLISTS:
 if not KEEP_LOCAL_PLAYLIST_EXPORT:
   logging.info("Removing folder used for local export")
   os.system('rm -rf %s' % (local_playlists))
+
+if RESCAN_LMS:
+  rescan_lms()
