@@ -112,11 +112,11 @@ def sync_rhythmbox():
   elementTree.write("%s/%s" % (local_playlists, playlists_filename))
   logging.debug("Using rsync to copy xml files")
   if not DRY_RUN:
-    cmd = 'rsync -vrlptgz -e ssh "%s/"*.xml "%s@%s:%s" --delete-excluded' % (local_playlists, remote_username, remote_host, remote_rhythmbox)
+    cmd = 'rsync -vrlptg --delete -e ssh "%s/"*.xml "%s@%s:%s"' % (local_playlists, remote_username, remote_host, remote_rhythmbox)
     logging.debug('Executing: %s' % (cmd))
     os.system(cmd)
     
-    cmd = 'rsync -vrlptgz -e ssh "%s/" "%s@%s:%s" --delete-excluded' % (local_coverart, remote_username, remote_host, remote_coverart)
+    cmd = 'rsync -vrlptg --delete -e ssh "%s/" "%s@%s:%s"' % (local_coverart, remote_username, remote_host, remote_coverart)
     logging.debug('Executing: %s' % (cmd))
     os.system(cmd)
 
@@ -125,7 +125,7 @@ def sync_media():
   logging.info("Syncing media files...")
   if not DRY_RUN:
     for media_loc in local_media:
-      cmd = 'rsync -vrlptgz --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r -e ssh "%s" "%s@%s:%s/" --delete-excluded' % (media_loc, remote_username, remote_host, remote_media)
+      cmd = 'rsync -vrlptg --delete --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r -e ssh "%s" "%s@%s:%s/"' % (media_loc, remote_username, remote_host, remote_media)
       logging.debug('Executing: %s' % (cmd))
       os.system(cmd)
 
@@ -156,7 +156,7 @@ def sync_playlists():
     playlist_out.writelines(playlist_text_out)
     playlist_out.close()
   if not DRY_RUN:
-    cmd = 'rsync -vrlptgz -e ssh "%s/"*.%s "%s@%s:%s" --delete-excluded' % (alterred_playlists, PLAYLIST_FORMAT.lower(), remote_username, remote_host, remote_playlists)
+    cmd = 'rsync -vrlptg --delete -e ssh "%s/" "%s@%s:%s"' % (alterred_playlists, remote_username, remote_host, remote_playlists)
     logging.debug('Executing: %s' % (cmd))
     os.system(cmd)
 
