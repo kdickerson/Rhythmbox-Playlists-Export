@@ -22,9 +22,9 @@ local_username = 'jessica'
 local_media = ["/home/%s/%s" % (local_username, x) for x in ["Music", "Audiobooks", "Podcasts"]]
 local_playlists = '/tmp/rhythmbox_sync'
 remote_username = 'kyle'
-remote_host = "192.168.1.15" # Assumes passwordless SSH authentication available, uses rsync+ssh to move files
-remote_media = "/mnt/Music/Music/Jess"
-remote_playlists = '/mnt/Music/Playlists'
+remote_host = "silver-nuc" # Assumes passwordless SSH authentication available, uses rsync+ssh to move files
+remote_media = "/home/kyle/lms_music/Music/Jess"
+remote_playlists = '/home/kyle/lms_music/Playlists/Jess'
 
 EXPORT_PLAYLISTS = True
 KEEP_LOCAL_PLAYLIST_EXPORT = False
