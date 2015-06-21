@@ -130,7 +130,7 @@ def sync_media():
   logging.info("Syncing media files...")
   if not DRY_RUN:
     for media_loc in local_media:
-      cmd = 'rsync -vrlptg --delete --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r -e ssh "%s" "%s@%s:%s/"' % (media_loc, remote_username, remote_host, remote_media)
+      cmd = 'rsync -vrlptgk --delete --chmod=Du=rwx,Dg=rx,Do=rx,Fu=rw,Fg=r,Fo=r -e ssh "%s" "%s@%s:%s/"' % (media_loc, remote_username, remote_host, remote_media)
       logging.debug('Executing: %s' % (cmd))
       os.system(cmd)
 
